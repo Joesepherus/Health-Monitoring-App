@@ -2,3 +2,4 @@
 /ios/build/
 /ios/Pods/
 /android/app/build/
+/frontend/node_modules
