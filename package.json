@@ -25,7 +25,8 @@
     "mongoose": "*",
     "npm-lifecycle": "^2.0.1",
     "react-manager": "^1.0.4",
-    "react-semantic-ui": "^0.2.0"
+    "react-semantic-ui": "^0.2.0",
+    "socket.io": "^2.2.0"
   },
   "author": "Jozef Maloch",
   "license": "ISC",

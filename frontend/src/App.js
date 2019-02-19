@@ -6,6 +6,7 @@ import i18next from 'i18next'
 // custom
 import './App.css'
 import AllScooters from './pages/AllUsers'
+import { subscribeToTimer } from './api/api'
 import common_sk from './translations/sk/common.json'
 import common_en from './translations/en/common.json'
 
@@ -23,10 +24,23 @@ i18next.init({
 })
 
 class App extends Component {
+  constructor(props) {
+    super(props)
+    subscribeToTimer((err, timestamp) =>
+      this.setState({
+        timestamp
+      })
+    )
+    this.state = {
+      timestamp: 0
+    }
+  }
+
   render() {
     return (
       <I18nextProvider i18n={i18next}>
         <AllScooters />
+        <p>{this.state.timestamp}</p>
       </I18nextProvider>
     )
   }

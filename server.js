@@ -2,6 +2,7 @@ var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
+const io = require('socket.io')()
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/client'))
 const env = process.env.NODE_ENV || 'development'
@@ -116,3 +117,17 @@ var server = app.listen(process.env.PORT || 3001, function() {
   console.log('App listening at http://%s:%s', host, port)
 })
 // --------------------------------------------------------------------------------------------
+
+// ===== REAL TIME SOCKETS HANDLING =====
+io.on('connection', client => {
+  client.on('subscribeToTimer', interval => {
+    console.log('client is subscribing to timer with interval ', interval)
+    setInterval(() => {
+      client.emit('timer', Math.floor(Math.random() * 100 + 50))
+    }, interval)
+  })
+})
+
+const port = 8000
+io.listen(port)
+console.log('listening on port ', port)
