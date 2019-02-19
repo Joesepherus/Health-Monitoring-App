@@ -1,25 +1,37 @@
 {
-  "name": "bakalarka",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-scripts": "2.1.1"
+  "name": "Health-Monitoring-App",
+  "version": "0.0.1",
+  "description": "React Web App about monitoring health of its users",
+  "main": "app.js",
+  "engines": {
+    "npm": "6.2.x"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "node server.js",
+    "heroku-postbuild": "cd frontend && npm install && npm run build && cp -a ./build/. ./",
+    "dev": "concurrently \"npm run server\" \"npm run frontend\"",
+    "server": "nodemon server.js",
+    "frontend": "node start-frontend.js",
+    "test": "cd frontend && npm run build && cp -a ./build/. ./"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "body-parser": "*",
+    "bootstrap": "^4.0.0",
+    "cors": "^2.8.4",
+    "express": "*",
+    "express-jwt": "^5.3.1",
+    "jquery": "^3.3.1",
+    "jwks-rsa": "^1.2.1",
+    "mongoose": "*",
+    "npm-lifecycle": "^2.0.1",
+    "react-manager": "^1.0.4",
+    "react-semantic-ui": "^0.2.0"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "author": "Jozef Maloch",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^3.5.1",
+    "create-react-class": "^15.6.3",
+    "semantic-ui-react": "^0.81.1"
+  }
 }
