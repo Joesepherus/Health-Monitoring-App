@@ -12,7 +12,7 @@
     "dev": "concurrently \"npm run server\" \"npm run frontend\"",
     "server": "nodemon server.js",
     "frontend": "node start-frontend.js",
-    "test": "cd frontend && npm run build && cp -a ./build/. ./"
+    "test": "mocha"
   },
   "dependencies": {
     "body-parser": "*",

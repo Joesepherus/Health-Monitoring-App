@@ -1,27 +1,16 @@
-var mongoose = require('mongoose')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-var schema = mongoose.Schema({
-  id: {
-    type: Number
-  },
-  name: {
-    type: String
-  },
-  state: {
-    type: String
-  },
-  created_by: {
-    type: String
-  },
-  create_date: {
-    type: Date
-  },
-  removed_date: {
-    type: Date
-  }
+const UserSchema = new Schema({
+  name: String,
+  email: String
 })
 
-var User = (module.exports = mongoose.model('User', schema))
+module.exports = {
+  UserSchema: UserSchema
+}
+
+// module.exports.User = mongoose.model('user', UserSchema)
 
 module.exports.getAllUsers = function(callback, limit) {
   User.find(callback).limit(limit)

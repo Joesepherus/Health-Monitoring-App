@@ -13,7 +13,6 @@ console.log('Starting application')
 
 // DB SETUP
 MONGOLAB_URI = process.env.MONGOLAB_URI_HEALTH_MONITORING_APP
-console.log('MONGOLAB_URI: ', MONGOLAB_URI)
 console.log('Initializing connection to MongoDB')
 mongoose.connect(MONGOLAB_URI, function(error) {
   if (error) console.error(error)
