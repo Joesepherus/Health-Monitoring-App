@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { Router, BrowserRouter, Route, Switch } from 'react-router-dom'
-import Dashboard from './components/screens/Dashboard'
+import { Router, Route, Switch } from 'react-router-dom'
 import LoginScreen from './components/screens/LoginScreen'
 import RegisterScreen from './components/screens/RegisterScreen'
 import ErrorScreen from './components/screens/ErrorScreen'
 import { observer, inject } from 'mobx-react'
 import CustomToast from './components/basic/CustomToast/CustomToast'
-import AddUserScreen from './components/screens/AddUserScreen'
 import ScreensContainer from './components/containers/ScreensContainer/ScreensContainer'
 import history from './history'
 

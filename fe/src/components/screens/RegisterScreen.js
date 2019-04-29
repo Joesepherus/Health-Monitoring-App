@@ -22,24 +22,16 @@ class RegisterScreen extends Component {
       email: this.state.email,
       password: this.state.password
     }
-    let promise = new Promise((resolve, reject) => {
-      resolve(
-        axios
-          .post(server_api + '/api/admin', {
-            admin
-          })
-          .then(response => {
-            showToast(response.data.message, 'info')
-            redirect('/login', this.props.history)
-            // return response
-          })
-          .catch(function(error) {})
-      )
-    })
-    // promise.then(response => {
-    //   this.getProjects()
-    //   this.getProject(this.project._id)
-    // })
+    axios
+      .post(server_api + '/api/admin', {
+        admin
+      })
+      .then(response => {
+        showToast(response.data.message, 'info')
+        redirect('/login', this.props.history)
+        // return response
+      })
+      .catch(function(error) {})
   }
 
   onChange = (value, name) => {

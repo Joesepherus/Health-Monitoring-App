@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import './ContainerPaddingUI.scss'
-import { Grid, Image, Segment } from 'semantic-ui-react'
+import { Grid } from 'semantic-ui-react'
 
 export default class ContainerPaddingUI extends Component {
   render() {

@@ -70,3 +70,8 @@
 .userDetail-data {
   width: 80%;
 }
+
+.navbar a {
+  padding-right: 20px;
+}
+

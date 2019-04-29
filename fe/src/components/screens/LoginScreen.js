@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import { server_api } from '../../global/global'
 import CustomInput from '../basic/CustomInput/CustomInput'
 import CustomButton from '../basic/CustomButton/CustomButton'
 import './RegisterScreen.css'
 import CustomHeader from '../basic/CustomHeader/CustomHeader'
 import { observer, inject } from 'mobx-react'
-import { redirect, setLoginStatus, showToast } from '../../global/global'
+import { redirect } from '../../global/global'
 import { Link } from 'react-router-dom'
 
 class LoginScreen extends Component {

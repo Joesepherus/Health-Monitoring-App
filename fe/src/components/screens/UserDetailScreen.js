@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
-import { toJS } from 'mobx'
-import CustomInput from '../basic/CustomInput/CustomInput'
 import CustomForm from '../complex/CustomForm/CustomForm'
 import CustomButton from '../basic/CustomButton/CustomButton'
 import CustomHeader from '../basic/CustomHeader/CustomHeader'
@@ -12,7 +10,6 @@ let head = [
   { value: 'Tep srdca', name: 'heartRate' },
   { value: 'Dátum', name: 'date' }
 ]
-let body = []
 
 class UserDetailScreen extends Component {
   constructor(props) {

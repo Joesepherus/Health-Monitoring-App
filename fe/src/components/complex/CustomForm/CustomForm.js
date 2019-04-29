@@ -1,6 +1,5 @@
 import React from 'react'
-import { Button, Checkbox, Form } from 'semantic-ui-react'
-import CustomButton from '../../basic/CustomButton/CustomButton'
+import { Form } from 'semantic-ui-react'
 import CustomInput from '../../basic/CustomInput/CustomInput'
 import './CustomForm.css'
 
@@ -25,6 +24,8 @@ class CustomForm extends React.Component {
             />
           </Form.Field>
         )
+      default:
+        return
     }
   }
 

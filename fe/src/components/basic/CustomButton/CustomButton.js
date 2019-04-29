@@ -9,6 +9,7 @@ export default class CustomButton extends React.Component {
         onClick={this.props.onClick}
         className={this.props.className}
         color={this.props.color}
+        inverted={this.props.inverted}
       >
         {this.props.children}
       </Button>

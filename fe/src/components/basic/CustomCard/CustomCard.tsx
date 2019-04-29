@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './CustomCard.scss'
+import CustomButton from '../CustomButton/CustomButton'
 
 export default class CustomCard extends Component<ICustomCard> {
   render() {
@@ -21,9 +22,9 @@ export default class CustomCard extends Component<ICustomCard> {
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </p>
-          <a href="#" className="btn btn-primary">
-            Go somewhere
-          </a>
+          <CustomButton className="btn btn-primary" color="blue">
+            Viacej o kolobežkárovi
+          </CustomButton>
         </div>
       </div>
     )

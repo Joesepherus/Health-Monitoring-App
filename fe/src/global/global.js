@@ -1,5 +1,5 @@
 import store from '../stores/store'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 export let server_api = 'http://localhost:3001'
 

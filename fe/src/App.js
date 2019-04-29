@@ -4,10 +4,6 @@ import { Provider } from 'mobx-react'
 import store from './stores/store'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     return (
       <div className="App">

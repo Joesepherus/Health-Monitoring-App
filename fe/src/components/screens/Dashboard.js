@@ -5,13 +5,13 @@ import CustomCard from '../basic/CustomCard/CustomCard.tsx'
 import ContainerPaddingUI from '../containers/ContainerPaddingUI/ContainerPaddingUI'
 import { Grid } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'
-import { toJS } from 'mobx'
-import { setLoginStatus, redirect, showToast } from '../../global/global'
+import { redirect } from '../../global/global'
 import CustomFAB from '../basic/CustomFAB/CustomFAB'
 import { mdiPlus } from '@mdi/js'
 import { Link } from 'react-router-dom'
+import CustomButton from '../basic/CustomButton/CustomButton'
 // mockup data for people
-let mockupPeople = require('../../assets/mockup_data/mockPeople.json')
+// let mockupPeople = require('../../assets/mockup_data/mockPeople.json')
 
 class Dashboard extends Component {
   constructor(props) {
@@ -39,25 +39,25 @@ class Dashboard extends Component {
     return (
       <div>
         <ContainerPaddingUI>
-          <div class="jumbotron" style={{ width: '100%' }}>
-            <h1 class="display-4">Monitorovanie používateľov</h1>
-            <p class="lead">
-              This is a simple hero unit, a simple jumbotron-style component for
-              calling extra attention to featured content or information.
+          <div className="jumbotron" style={{ width: '100%' }}>
+            <h1 className="display-4">Monitorovanie používateľov</h1>
+            <p className="lead">
+              Appka na monitorovanie používateľov kolobežiek v reálnom čase.
             </p>
-            <hr class="my-4" />
-            <p>
-              It uses utility classes for typography and spacing to space
-              content out within the larger container.
-            </p>
-            <a class="btn btn-primary btn-lg" href="#" role="button">
-              Learn more
-            </a>
+            <hr className="my-4" />
+            <h2>Vitaj {this.props.store.admin.name}!</h2>
+            <p>Pod týmto textom sú zobrazený všetci vaši používateľia.</p>
+            <CustomButton
+              color="blue"
+              onClick={() => redirect('/about-app', this.props.history)}
+            >
+              Viacej o appke
+            </CustomButton>
           </div>
           {store.admin.users.length > 0 &&
             store.admin.users.map((person, index) => {
               return (
-                <Grid.Column>
+                <Grid.Column key={index}>
                   <Link
                     to={
                       '/user-detail/admin=' +
