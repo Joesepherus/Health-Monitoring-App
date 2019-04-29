@@ -19,7 +19,7 @@ MONGOLAB_URI = process.env.MONGOLAB_URI_HEALTH_MONITORING_APP
 console.log('Initializing connection to MongoDB')
 // mongoose.connect('mongodb://localhost:27017/health-monitoring-app', function(
 mongoose.connect(
-  'mongodb://user:ggnoreJOES5637@ds343985.mlab.com:43985/health-monitoring-app',
+  'mongodb://admin:ahoj50@ds343985.mlab.com:43985/health-monitoring-app',
   function(error) {
     if (error) console.error(error)
     else console.log('Successfuly connected to MongoDB')
