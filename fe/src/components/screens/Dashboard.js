@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import '../../App.css'
-import { subscribeToHeartRate } from '../../api/api'
+// import { subscribeToHeartRate } from '../../api/api'
 import CustomCard from '../basic/CustomCard/CustomCard.tsx'
 import ContainerPaddingUI from '../containers/ContainerPaddingUI/ContainerPaddingUI'
 import { Grid } from 'semantic-ui-react'
@@ -24,14 +24,14 @@ class Dashboard extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.store.admin._id !== this.state.adminId) {
-      this.setState({ adminId: this.props.store.admin._id })
-      subscribeToHeartRate((err, heartRate) => {
-        this.setState({
-          heartRate
-        })
-      }, this.props.store.admin._id)
-    }
+    // if (this.props.store.admin._id !== this.state.adminId) {
+    //   this.setState({ adminId: this.props.store.admin._id })
+    //   subscribeToHeartRate((err, heartRate) => {
+    //     this.setState({
+    //       heartRate
+    //     })
+    //   }, this.props.store.admin._id)
+    // }
   }
 
   render() {

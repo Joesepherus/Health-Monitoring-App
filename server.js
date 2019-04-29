@@ -274,29 +274,29 @@ var server = app.listen(process.env.PORT || 3001, function() {
 })
 // --------------------------------------------------------------------------------------------
 
-// ===== REAL TIME SOCKETS HANDLING =====
-io.on('connection', client => {
-  client.on('subscribeToHeartRate', (interval, adminId) => {
-    console.log('interval, adminId: ', interval, adminId)
-    console.log('client is subscribing to timer with interval ', interval)
-    // Admin.getAdminById(adminId, function(err, admin) {
-    //   if (err) {
-    //     throw err
-    //   }
-    //   let usersLength = admin.users.length
-    //   setInterval(() => {
-    //     let heartRates = []
-    //     for (i = 0; i < usersLength; i++) {
-    //       heartRates.push(Math.floor(Math.random() * 100 + 50))
-    //     }
-    //     User.heartRateAll(adminId, function(err, user) {})
-    //     console.log(heartRates)
-    //     client.emit('heartRate', heartRates)
-    //   }, interval)
-    // })
-  })
-})
+// // ===== REAL TIME SOCKETS HANDLING =====
+// io.on('connection', client => {
+//   client.on('subscribeToHeartRate', (interval, adminId) => {
+//     console.log('interval, adminId: ', interval, adminId)
+//     console.log('client is subscribing to timer with interval ', interval)
+//     // Admin.getAdminById(adminId, function(err, admin) {
+//     //   if (err) {
+//     //     throw err
+//     //   }
+//     //   let usersLength = admin.users.length
+//     //   setInterval(() => {
+//     //     let heartRates = []
+//     //     for (i = 0; i < usersLength; i++) {
+//     //       heartRates.push(Math.floor(Math.random() * 100 + 50))
+//     //     }
+//     //     User.heartRateAll(adminId, function(err, user) {})
+//     //     console.log(heartRates)
+//     //     client.emit('heartRate', heartRates)
+//     //   }, interval)
+//     // })
+//   })
+// })
 
-const port = 8000
-io.listen(port)
-console.log('listening on port ', port)
+// const port = 8000
+// io.listen(port)
+// console.log('listening on port ', port)

@@ -41,16 +41,18 @@ class UserDetailScreen extends Component {
   getUser = async () => {
     let userId = this.props.match.params.userId
     let adminId = this.props.match.params.adminId
-    let user = await this.props.store.getUser(adminId, userId)
-    let chart = user.heartRate.map(hr => {
-      return { x: hr.date, y: hr.heartRate }
-    })
-    this.setState({
-      email: user.email,
-      name: user.name,
-      heartRate: user.heartRate,
-      chart: chart
-    })
+    setInterval(async () => {
+      let user = await this.props.store.getUser(adminId, userId)
+      let chart = user.heartRate.map(hr => {
+        return { x: hr.date, y: hr.heartRate }
+      })
+      this.setState({
+        email: user.email,
+        name: user.name,
+        heartRate: user.heartRate,
+        chart: chart
+      })
+    }, 1000)
   }
 
   updateUser = async () => {
