@@ -4,9 +4,12 @@ var bodyParser = require('body-parser')
 var mongoose = require('mongoose')
 const io = require('socket.io')()
 app.use(bodyParser.json())
-app.use(express.static(__dirname + '/client'))
+app.use(express.static(__dirname + '/fe'))
 const env = process.env.NODE_ENV || 'development'
+const cors = require('cors')
 
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cors())
 date = new Date()
 
 console.log('Starting application')
@@ -14,7 +17,9 @@ console.log('Starting application')
 // DB SETUP
 MONGOLAB_URI = process.env.MONGOLAB_URI_HEALTH_MONITORING_APP
 console.log('Initializing connection to MongoDB')
-mongoose.connect(MONGOLAB_URI, function(error) {
+mongoose.connect('mongodb://localhost:27017/health-monitoring-app', function(
+  error
+) {
   if (error) console.error(error)
   else console.log('Successfuly connected to MongoDB')
 })
@@ -35,8 +40,8 @@ app.get('/api/user', function(req, res) {
 })
 
 // display a user with a certain ID
-app.get('/api/user/:id', function(req, res) {
-  User.getUserById(req.params.id, function(err, user) {
+app.get('/api/admin=:adminId&user=:userId', function(req, res) {
+  User.getUserById(req.params.adminId, req.params.userId, function(err, user) {
     if (err) {
       throw err
     }
@@ -47,30 +52,39 @@ app.get('/api/user/:id', function(req, res) {
 // add a new user
 app.post('/api/user', function(req, res) {
   var user = req.body.user
+  let admin_id = req.body.admin_id
   console.log(user)
-  User.addUser(user, function(err, user) {
+  console.log(admin_id)
+  User.addUser(user, admin_id, function(err, user) {
     if (err) {
-      throw err
       res.send({
         message: 'something went wrong'
       })
+      throw err
     } else {
-      res.json(user)
+      res.json({
+        message: 'Dáta používateľa ' + user.name + ' boli zmenené',
+        status: 200,
+        user
+      })
     }
   })
 })
 
 // update a user
 app.put('/api/user/:id', function(req, res) {
-  var id = req.params.id
+  var userId = req.params.id
+  let adminId = req.body.adminId
   var user = req.body.user
-  console.log(id)
-  console.log(user)
-  User.updateUser(id, user, {}, function(err, user) {
+  User.updateUser(adminId, userId, user, function(err, user) {
     if (err) {
       res.send({ message: 'Error', status: 200 })
     } else {
-      res.send({ message: 'Dáta boli zmenené', status: 200 })
+      res.send({
+        message: 'Dáta používateľa ' + user.name + ' boli zmenené',
+        status: 200,
+        user: user
+      })
     }
   })
 })
@@ -95,16 +109,157 @@ app.put('/api/user/removed/:id', function(req, res) {
 })
 
 // remove user permanently
-app.delete('/api/user/deleted/:id', function(req, res) {
+app.delete('/api/user/adminId=:adminId&userId=:userId', function(req, res) {
+  let adminId = req.params.adminId
+  let userId = req.params.userId
+  console.log('userId: ', userId)
+  console.log('adminId: ', adminId)
+  User.deletePermanentlyUser(adminId, userId, function(err, user) {
+    if (err) {
+      res.send({
+        message: 'something went wrong'
+      })
+      throw err
+    } else {
+      res.json({
+        message: 'Používateľ ' + user.name + ' bol úspešne vymazaný.'
+      })
+    }
+  })
+})
+
+// ===== ADMIN =====
+
+Admin = require('./models/admin.js')
+
+// display all admins
+app.get('/api/admin', function(req, res) {
+  Admin.getAllAdmins(function(err, allAdmins) {
+    if (err) {
+      throw err
+    }
+    console.log(allAdmins)
+    res.json(allAdmins)
+  })
+})
+
+// display a admin with a certain ID
+app.get('/api/admin/:id', function(req, res) {
+  Admin.getAdminById(req.params.id, function(err, admin) {
+    if (err) {
+      throw err
+    }
+    res.json(admin)
+  })
+})
+
+// add a new admin
+app.post('/api/admin', function(req, res) {
+  var admin = req.body.admin
+  console.log(admin)
+  Admin.addAdmin(admin, function(err) {
+    if (err) {
+      res.send({
+        message: 'Admin s emailom ' + admin.email + ' už existuje.'
+      })
+    } else {
+      res.send({ message: 'Úspešne si sa zaregistroval.' })
+    }
+  })
+})
+
+// login admin
+app.post('/api/admin/login', function(req, res) {
+  var admin = req.body.admin
+  console.log(admin)
+  Admin.loginAdmin(admin, function(err, admin_db) {
+    if (err) {
+      res.send({
+        message: 'Zadali ste nesprávne prihlasovacie údaje.',
+        status: 404
+      })
+    } else {
+      res.send({
+        admin_id: admin_db._id,
+        admin: admin_db,
+        message: 'Prihlásenie prebehlo úspešne.',
+        status: 200
+      })
+    }
+  })
+})
+
+// update a admin
+app.put('/api/admin/:id', function(req, res) {
   var id = req.params.id
-  User.deletePermanentlyUser(id, function(err, user) {
+  var admin = req.body.admin
+  console.log(id)
+  console.log(admin)
+  Admin.updateAdmin(id, admin, { new: true }, function(err, admin) {
+    console.log('admin: ', admin)
+    if (err) {
+      res.send({ message: 'Error', status: 200 })
+    } else {
+      res.send({
+        message: 'Dáta admina ' + admin.name + ' boli zmenené',
+        status: 200,
+        admin: admin
+      })
+    }
+  })
+})
+
+// change password of a admin
+app.put('/api/admin/changePassword/:id', function(req, res) {
+  var id = req.params.id
+  var admin = req.body.admin
+  console.log(id)
+  console.log(admin)
+  Admin.changePassword(id, admin, {}, function(err, db_admin) {
+    console.log('admin: ', db_admin)
+    if (err) {
+      res.send({ message: 'Error nesprávne pôvodné heslo.', status: 200 })
+    } else {
+      res.send({
+        message: 'Heslo admina ' + db_admin.name + ' boli zmenené',
+        status: 200
+      })
+    }
+  })
+})
+
+// change admins state to removed admin
+app.put('/api/admin/removed/:id', function(req, res) {
+  var id = req.params.id
+  var admin = req.body
+  console.log(id)
+
+  console.log(admin)
+  Admin.removeAdmin(id, admin, {}, function(err, admin) {
     if (err) {
       throw err
       res.send({
         message: 'something went wrong'
       })
     } else {
-      res.json(user)
+      res.json(admin)
+    }
+  })
+})
+
+// remove admin permanently
+app.delete('/api/admin/:id', function(req, res) {
+  var id = req.params.id
+  Admin.deletePermanentlyAdmin(id, function(err, admin) {
+    if (err) {
+      throw err
+      res.send({
+        message: 'something went wrong'
+      })
+    } else {
+      res.json({
+        message: 'Váš účet ' + admin.name + ' bol úspešne vymazaný.'
+      })
     }
   })
 })
@@ -119,11 +274,24 @@ var server = app.listen(process.env.PORT || 3001, function() {
 
 // ===== REAL TIME SOCKETS HANDLING =====
 io.on('connection', client => {
-  client.on('subscribeToTimer', interval => {
+  client.on('subscribeToHeartRate', (interval, adminId) => {
+    console.log('interval, adminId: ', interval, adminId)
     console.log('client is subscribing to timer with interval ', interval)
-    setInterval(() => {
-      client.emit('timer', Math.floor(Math.random() * 100 + 50))
-    }, interval)
+    // Admin.getAdminById(adminId, function(err, admin) {
+    //   if (err) {
+    //     throw err
+    //   }
+    //   let usersLength = admin.users.length
+    //   setInterval(() => {
+    //     let heartRates = []
+    //     for (i = 0; i < usersLength; i++) {
+    //       heartRates.push(Math.floor(Math.random() * 100 + 50))
+    //     }
+    //     User.heartRateAll(adminId, function(err, user) {})
+    //     console.log(heartRates)
+    //     client.emit('heartRate', heartRates)
+    //   }, interval)
+    // })
   })
 })
 

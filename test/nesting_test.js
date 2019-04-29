@@ -1,6 +1,7 @@
 const assert = require('assert')
 const mongoose = require('mongoose')
 const Admin = require('../models/admin')
+const { User } = require('../models/user')
 
 describe('Testing nesting', function() {
   beforeEach(function(done) {
@@ -10,10 +11,15 @@ describe('Testing nesting', function() {
   })
 
   it('Create an admin with users', function(done) {
+    const Adam = new User({
+      name: 'Adam',
+      email: 'adam@gmail.com'
+    })
+
     const Jozef = new Admin({
       name: 'Jozef Maloch',
       email: 'Jozefmaloch@gmail.com',
-      users: [{ name: 'Adam', email: 'adam@gmail.com' }]
+      users: [Adam]
     })
 
     Jozef.save().then(function() {
