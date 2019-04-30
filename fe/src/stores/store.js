@@ -106,7 +106,7 @@ class store {
     return user
   }
 
-  deleteUser() {
+  deleteUser(history) {
     axios
       .delete(
         server_api +
@@ -118,6 +118,8 @@ class store {
       .then(response => {
         if (response.data.status === 200) {
           showToast(response.data.message, 'info')
+          this.getAdmin(this.admin._id)
+          redirect('/', history)
         } else {
           showToast(response.data.message, 'error')
         }
@@ -171,12 +173,14 @@ class store {
       })
   }
 
-  deleteAdmin() {
+  deleteAdmin(history) {
     axios
       .delete(server_api + '/api/admin/' + this.admin._id)
       .then(response => {
         if (response.data.status === 200) {
           showToast(response.data.message, 'info')
+          setLoginStatus(false)
+          redirect('/login', history)
         } else {
           showToast(response.data.message, 'error')
         }

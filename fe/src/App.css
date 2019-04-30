@@ -75,3 +75,51 @@
   padding-right: 20px;
 }
 
+.modal {
+  top: unset;
+  left: unset;
+  height: unset;
+}
+
+.card {
+  transition: all .2s ease-in-out; 
+}
+
+.card:hover {
+  transform: scale(1.1);
+}
+
+.navbar-light .navbar-nav .nav-link{
+  color: white;
+}
+
+.navbar-light .navbar-brand{
+  color: white;
+}
+
+.navbar-light .navbar-toggler {
+  color:white;
+}
+
+.navbar-light .navbar-toggler-icon {
+    background-image: url(data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000…p='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e);
+}
+
+.navbar-light .navbar-toggler {
+    color: rgba(0,0,0,.5);
+    border-color: white;
+}
+
+@media (max-width: 991px) {
+  .navbar a {
+    padding-right: 0px;
+  }
+
+  .App .addUser {
+    padding: 20px 0px;
+  }
+
+  .userDetail {
+    padding: 20px 0px;
+  }
+}

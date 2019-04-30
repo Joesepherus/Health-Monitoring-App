@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import '../../App.css'
 // import { subscribeToHeartRate } from '../../api/api'
-import CustomCard from '../basic/CustomCard/CustomCard.tsx'
+import CustomCard from '../basic/CustomCard/CustomCard.js'
 import ContainerPaddingUI from '../containers/ContainerPaddingUI/ContainerPaddingUI'
 import { Grid } from 'semantic-ui-react'
 import { observer, inject } from 'mobx-react'

@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import './CustomCard.scss'
 import CustomButton from '../CustomButton/CustomButton'
 
-export default class CustomCard extends Component<ICustomCard> {
+export default class CustomCard extends Component {
   render() {
     const { person } = this.props
+    console.log(person)
     return (
       <div
         className={this.props.className + ' card'}
@@ -19,6 +20,11 @@ export default class CustomCard extends Component<ICustomCard> {
           <h5 className="card-title">{person.name}</h5>
           <h5 className="card-title">{person.email}</h5>
           <p className="card-text">
+            {person && person.heartRate.length
+              ? person.heartRate[person.heartRate.length - 1].heartRate
+              : null}
+          </p>
+          <p className="card-text">
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </p>
@@ -29,13 +35,4 @@ export default class CustomCard extends Component<ICustomCard> {
       </div>
     )
   }
-}
-
-interface ICustomCard {
-  person: {
-    name: string
-    email: string
-    photo: string
-  }
-  className: string
 }

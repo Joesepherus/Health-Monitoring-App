@@ -4,6 +4,7 @@ const Schema = mongoose.Schema
 const UserSchema = new Schema({
   name: String,
   email: String,
+  img: { data: Buffer, contentType: String },
   heartRate: Array
 })
 
@@ -70,6 +71,28 @@ module.exports.updateHeartRate = function(
   })
 }
 
+module.exports.updateHeartRate = function(
+  adminEmail,
+  userEmail,
+  heartRate,
+  longitude,
+  latitude,
+  callback
+) {
+  Admin.find({ email: adminEmail }).then(function(db_admin) {
+    let foundUserIndex = db_admin.users.findIndex(function(user) {
+      return user.email == userEmail
+    })
+    db_admin.users[foundUserIndex].heartRate = heartRate
+    db_admin.users[foundUserIndex].date = Date.now()
+    db_admin.users[foundUserIndex].longitude = longitude
+    db_admin.users[foundUserIndex].latitude = latitude
+    db_admin.save().then(function() {
+      callback(null, db_admin.users[foundUserIndex])
+    })
+  })
+}
+
 module.exports.removeUser = function(id, user, options, callback) {
   var query = { _id: id }
   var update = {
@@ -84,9 +107,10 @@ module.exports.deletePermanentlyUser = function(adminId, userId, callback) {
       return user._id == userId
     })
 
+    user = db_admin.users[foundUserIndex]
     db_admin.users.splice(foundUserIndex, 1)
     db_admin.save().then(function() {
-      callback(null, db_admin.users[foundUserIndex])
+      callback(null, user)
     })
   })
 }

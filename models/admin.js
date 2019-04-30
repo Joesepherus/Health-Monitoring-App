@@ -120,4 +120,7 @@ module.exports.removeAdmin = function(id, admin, options, callback) {
 module.exports.deletePermanentlyAdmin = function(id, callback) {
   var query = { _id: id }
   Admin.deleteOne(query, callback)
+  // Admin.findById(id).exec(function(err, admin_found) {
+  //   callback(null, admin_found)
+  // })
 }

@@ -65,7 +65,7 @@ app.post('/api/user', function(req, res) {
       throw err
     } else {
       res.json({
-        message: 'Dáta používateľa ' + user.name + ' boli zmenené',
+        message: 'Používateľ ' + user.name + ' bol úspešne vytvorený.',
         status: 200,
         user
       })
@@ -83,7 +83,7 @@ app.put('/api/user/:id', function(req, res) {
       res.send({ message: 'Error', status: 200 })
     } else {
       res.send({
-        message: 'Dáta používateľa ' + user.name + ' boli zmenené',
+        message: 'Dáta používateľa ' + user.name + ' boli úspešne zmenené.',
         status: 200,
         user: user
       })
@@ -117,6 +117,7 @@ app.delete('/api/user/adminId=:adminId&userId=:userId', function(req, res) {
   console.log('userId: ', userId)
   console.log('adminId: ', adminId)
   User.deletePermanentlyUser(adminId, userId, function(err, user) {
+    console.log(user)
     if (err) {
       res.send({
         message: 'something went wrong'
@@ -124,7 +125,8 @@ app.delete('/api/user/adminId=:adminId&userId=:userId', function(req, res) {
       throw err
     } else {
       res.json({
-        message: 'Používateľ ' + user.name + ' bol úspešne vymazaný.'
+        message: 'Používateľ ' + user.name + ' bol úspešne vymazaný.',
+        status: 200
       })
     }
   })
@@ -223,7 +225,7 @@ app.put('/api/admin/changePassword/:id', function(req, res) {
       res.send({ message: 'Error nesprávne pôvodné heslo.', status: 200 })
     } else {
       res.send({
-        message: 'Heslo admina ' + db_admin.name + ' boli zmenené',
+        message: 'Heslo admina ' + db_admin.name + ' bolo úspešne zmenené.',
         status: 200
       })
     }
@@ -254,13 +256,14 @@ app.delete('/api/admin/:id', function(req, res) {
   var id = req.params.id
   Admin.deletePermanentlyAdmin(id, function(err, admin) {
     if (err) {
-      throw err
       res.send({
         message: 'something went wrong'
       })
+      throw err
     } else {
       res.json({
-        message: 'Váš účet ' + admin.name + ' bol úspešne vymazaný.'
+        message: 'Váš účet bol úspešne vymazaný.',
+        status: 200
       })
     }
   })

@@ -3,6 +3,7 @@ import { observer, inject } from 'mobx-react'
 import CustomForm from '../complex/CustomForm/CustomForm'
 import CustomButton from '../basic/CustomButton/CustomButton'
 import CustomHeader from '../basic/CustomHeader/CustomHeader'
+import CustomModal from '../basic/CustomModal/CustomModal'
 
 class AdminDetailScreen extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class AdminDetailScreen extends Component {
     this.state = {
       name: this.props.store.admin.name,
       email: this.props.store.admin.email,
+      modalStatus: false,
       oldPassword: '',
       newPassword: '',
       basicDataForm: [
@@ -85,12 +87,18 @@ class AdminDetailScreen extends Component {
   }
 
   deleteAdmin = () => {
-    this.props.store.deleteAdmin()
+    this.props.store.deleteAdmin(this.props.history)
   }
 
   onChange = (value, name) => {
     this.setState({
       [name]: value
+    })
+  }
+
+  toggleModal = () => {
+    this.setState({
+      modalStatus: !this.state.modalStatus
     })
   }
 
@@ -125,10 +133,22 @@ class AdminDetailScreen extends Component {
           Zmeniť
         </CustomButton>
         <div className="userDetail_btns">
-          <CustomButton onClick={this.deleteAdmin} color="red">
+          <CustomButton onClick={this.toggleModal} color="red">
             Zmazať profil
           </CustomButton>
         </div>
+        <CustomModal
+          open={this.state.modalStatus}
+          toggleModal={this.toggleModal}
+          decline={this.toggleModal}
+          accept={this.deleteAdmin}
+          header="Vymazanie účtu"
+          body={
+            'Naozaj chcete vymazať svoj účet "' +
+            this.props.store.admin.name +
+            '"?'
+          }
+        />
       </div>
     )
   }
