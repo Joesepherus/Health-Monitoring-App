@@ -9,13 +9,13 @@ import { observer, inject } from 'mobx-react'
 import history from '../../../history'
 import UserDetailScreen from '../../screens/UserDetailScreen'
 import AdminDetailScreen from '../../screens/AdminDetailScreen'
+import AboutAppScreen from '../../screens/AboutAppScreen'
+import AboutAuthorScreen from '../../screens/AboutAuthorScreen'
 
 class ScreensContainer extends Component {
   logout = () => {
-    // this.props.store.setLoggedIn(false)
     setLoginStatus(false)
     redirect('/login', history)
-    // window.location.href = '/login'
     showToast('Odhlásenie prebehlo úspešne.', 'info')
   }
 
@@ -26,6 +26,8 @@ class ScreensContainer extends Component {
         <Switch>
           <Route exact path="/" component={Dashboard} />
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/about-app" component={AboutAppScreen} />
+          <Route path="/about-author" component={AboutAuthorScreen} />
           <Route path="/add-user" component={AddUserScreen} />
           <Route
             path="/user-detail/admin=:adminId&user=:userId"

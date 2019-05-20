@@ -12,6 +12,8 @@ class AdminDetailScreen extends Component {
     this.state = {
       name: this.props.store.admin.name,
       email: this.props.store.admin.email,
+      minHeartRate: this.props.store.admin.minHeartRate,
+      maxHeartRate: this.props.store.admin.maxHeartRate,
       modalStatus: false,
       oldPassword: '',
       newPassword: '',
@@ -27,6 +29,18 @@ class AdminDetailScreen extends Component {
           name: 'name',
           placeholder: 'meno',
           label: 'Meno'
+        },
+        {
+          type: 'input',
+          name: 'minHeartRate',
+          placeholder: 'minimálny tep',
+          label: 'Minimálny tep'
+        },
+        {
+          type: 'input',
+          name: 'maxHeartRate',
+          placeholder: 'maximálny tep',
+          label: 'Maximálny tep'
         }
       ],
       changePassForm: [
@@ -58,11 +72,19 @@ class AdminDetailScreen extends Component {
   //   // Return null if the state hasn't changed
   //   return null
   // }
+
+  componentDidMount() {
+    this.props.store.getAdmin(localStorage.getItem('id'))
+    this.props.store.setActiveHeader('dashboard')
+  }
+
   componentDidUpdate(nextProps) {
-    if (nextProps.store.admin.name !== this.props.store.admin.name) {
+    if (nextProps.store.admin.name !== this.state.name) {
       this.setState({
         name: nextProps.store.admin.name,
-        email: nextProps.store.admin.email
+        email: nextProps.store.admin.email,
+        minHeartRate: nextProps.store.admin.minHeartRate,
+        maxHeartRate: nextProps.store.admin.maxHeartRate
       })
     }
   }
@@ -70,12 +92,16 @@ class AdminDetailScreen extends Component {
   updateAdmin = async () => {
     let updatedAdmin = await this.props.store.updateAdmin(
       this.state.email,
-      this.state.name
+      this.state.name,
+      this.state.minHeartRate,
+      this.state.maxHeartRate
     )
 
     this.setState({
       email: updatedAdmin.email,
-      name: updatedAdmin.name
+      name: updatedAdmin.name,
+      minHeartRate: updatedAdmin.minHeartRate,
+      maxHeartRate: updatedAdmin.maxHeartRate
     })
   }
 
@@ -113,6 +139,8 @@ class AdminDetailScreen extends Component {
           onChange={this.onChange}
           name={this.state.name}
           email={this.state.email}
+          minHeartRate={this.state.minHeartRate}
+          maxHeartRate={this.state.maxHeartRate}
         />
         <CustomButton className="btn" onClick={this.updateAdmin} color="blue">
           Zmeniť

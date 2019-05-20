@@ -18,19 +18,16 @@ console.log('Starting application')
 MONGOLAB_URI = process.env.MONGOLAB_URI_HEALTH_MONITORING_APP
 console.log('Initializing connection to MongoDB')
 // mongoose.connect('mongodb://localhost:27017/health-monitoring-app', function(
-mongoose.connect(
-  'mongodb://admin:ahoj50@ds343985.mlab.com:43985/health-monitoring-app',
-  function(error) {
-    if (error) console.error(error)
-    else console.log('Successfuly connected to MongoDB')
-  }
-)
+mongoose.connect(MONGOLAB_URI, function(error) {
+  if (error) console.error(error)
+  else console.log('Successfuly connected to MongoDB')
+})
 
 // ===== USER =====
 
 User = require('./models/user.js')
 
-// display all users
+// get all users
 app.get('/api/user', function(req, res) {
   User.getAllUsers(function(err, allUsers) {
     if (err) {
@@ -41,7 +38,7 @@ app.get('/api/user', function(req, res) {
   })
 })
 
-// display a user with a certain ID
+// get a user with a certain ID
 app.get('/api/admin=:adminId&user=:userId', function(req, res) {
   User.getUserById(req.params.adminId, req.params.userId, function(err, user) {
     if (err) {
@@ -91,25 +88,6 @@ app.put('/api/user/:id', function(req, res) {
   })
 })
 
-// change users state to removed user
-app.put('/api/user/removed/:id', function(req, res) {
-  var id = req.params.id
-  var user = req.body
-  console.log(id)
-
-  console.log(user)
-  User.removeUser(id, user, {}, function(err, user) {
-    if (err) {
-      throw err
-      res.send({
-        message: 'something went wrong'
-      })
-    } else {
-      res.json(user)
-    }
-  })
-})
-
 // remove user permanently
 app.delete('/api/user/adminId=:adminId&userId=:userId', function(req, res) {
   let adminId = req.params.adminId
@@ -125,7 +103,7 @@ app.delete('/api/user/adminId=:adminId&userId=:userId', function(req, res) {
       throw err
     } else {
       res.json({
-        message: 'Používateľ ' + user.name + ' bol úspešne vymazaný.',
+        message: 'Používateľ kolobežky' + user.name + ' bol úspešne vymazaný.',
         status: 200
       })
     }
@@ -136,7 +114,7 @@ app.delete('/api/user/adminId=:adminId&userId=:userId', function(req, res) {
 
 Admin = require('./models/admin.js')
 
-// display all admins
+// get all admins
 app.get('/api/admin', function(req, res) {
   Admin.getAllAdmins(function(err, allAdmins) {
     if (err) {
@@ -147,7 +125,7 @@ app.get('/api/admin', function(req, res) {
   })
 })
 
-// display a admin with a certain ID
+// get a admin with a certain ID
 app.get('/api/admin/:id', function(req, res) {
   Admin.getAdminById(req.params.id, function(err, admin) {
     if (err) {
@@ -164,7 +142,8 @@ app.post('/api/admin', function(req, res) {
   Admin.addAdmin(admin, function(err) {
     if (err) {
       res.send({
-        message: 'Admin s emailom ' + admin.email + ' už existuje.'
+        message: 'Admin s emailom ' + admin.email + ' už existuje.',
+        status: 404
       })
     } else {
       res.send({ message: 'Úspešne si sa zaregistroval.' })
@@ -222,31 +201,12 @@ app.put('/api/admin/changePassword/:id', function(req, res) {
   Admin.changePassword(id, admin, {}, function(err, db_admin) {
     console.log('admin: ', db_admin)
     if (err) {
-      res.send({ message: 'Error nesprávne pôvodné heslo.', status: 200 })
+      res.send({ message: 'Error nesprávne prihlasovacie údaje.', status: 200 })
     } else {
       res.send({
         message: 'Heslo admina ' + db_admin.name + ' bolo úspešne zmenené.',
         status: 200
       })
-    }
-  })
-})
-
-// change admins state to removed admin
-app.put('/api/admin/removed/:id', function(req, res) {
-  var id = req.params.id
-  var admin = req.body
-  console.log(id)
-
-  console.log(admin)
-  Admin.removeAdmin(id, admin, {}, function(err, admin) {
-    if (err) {
-      throw err
-      res.send({
-        message: 'something went wrong'
-      })
-    } else {
-      res.json(admin)
     }
   })
 })
@@ -257,7 +217,7 @@ app.delete('/api/admin/:id', function(req, res) {
   Admin.deletePermanentlyAdmin(id, function(err, admin) {
     if (err) {
       res.send({
-        message: 'something went wrong'
+        message: 'Nastala chyba pri vymávaní admina.'
       })
       throw err
     } else {

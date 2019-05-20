@@ -7,6 +7,8 @@ const AdminSchema = new Schema({
   name: String,
   email: String,
   password: String,
+  maxHeartRate: Number,
+  minHeartRate: Number,
   users: [User.UserSchema]
 })
 
@@ -37,7 +39,9 @@ module.exports.addAdmin = function(admin, callback) {
         var json = {
           name: admin.name,
           email: admin.email,
-          password: hash
+          password: hash,
+          minHeartRate: 60,
+          maxHeartRate: 140
         }
         Admin.create(json, callback)
       })
@@ -69,7 +73,9 @@ module.exports.updateAdmin = function(id, admin, options, callback) {
   var query = { _id: id }
   var update = {
     name: admin.name,
-    email: admin.email
+    email: admin.email,
+    minHeartRate: admin.minHeartRate,
+    maxHeartRate: admin.maxHeartRate
   }
   Admin.findOneAndUpdate(query, update, options, callback)
 }

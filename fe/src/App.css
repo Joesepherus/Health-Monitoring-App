@@ -106,6 +106,14 @@
     border-color: white;
 }
 
+.activeLink {
+  font-weight: 600;
+}
+
+.form {
+  margin-bottom: 10px;
+}
+
 @media (max-width: 991px) {
   .navbar a {
     padding-right: 0px;

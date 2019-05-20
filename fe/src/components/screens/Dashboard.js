@@ -34,8 +34,20 @@ class Dashboard extends Component {
     // }
   }
 
+  componentDidMount() {
+    this.props.store.setActiveHeader('dashboard')
+    this.getAdmin()
+  }
+
+  getAdmin = () => {
+    let interval = setInterval(() => {
+      this.props.store.getAdmin(localStorage.getItem('id'))
+    }, 1000)
+  }
+
   render() {
     const { store } = this.props
+
     return (
       <div>
         <ContainerPaddingUI>
@@ -69,7 +81,12 @@ class Dashboard extends Component {
                     <CustomCard
                       person={person}
                       className={
-                        this.state.heartRate[index] > 100 ? 'userAlert' : null
+                        person.heartRate[person.heartRate.length - 1]
+                          .heartRate > store.admin.maxHeartRate ||
+                        person.heartRate[person.heartRate.length - 1]
+                          .heartRate < store.admin.minHeartRate
+                          ? 'userAlert'
+                          : null
                       }
                     />
                   </Link>

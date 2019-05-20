@@ -4,7 +4,6 @@ const Schema = mongoose.Schema
 const UserSchema = new Schema({
   name: String,
   email: String,
-  img: { data: Buffer, contentType: String },
   heartRate: Array
 })
 
@@ -91,14 +90,6 @@ module.exports.updateHeartRate = function(
       callback(null, db_admin.users[foundUserIndex])
     })
   })
-}
-
-module.exports.removeUser = function(id, user, options, callback) {
-  var query = { _id: id }
-  var update = {
-    state: 'removed'
-  }
-  User.findOneAndUpdate(query, update, options, callback)
 }
 
 module.exports.deletePermanentlyUser = function(adminId, userId, callback) {

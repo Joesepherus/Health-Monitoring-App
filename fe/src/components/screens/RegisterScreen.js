@@ -27,8 +27,10 @@ class RegisterScreen extends Component {
         admin
       })
       .then(response => {
-        showToast(response.data.message, 'info')
-        redirect('/login', this.props.history)
+        showToast(response.data.message, 'error')
+        if (response.data.status === 200) {
+          redirect('/login', this.props.history)
+        }
         // return response
       })
       .catch(function(error) {})

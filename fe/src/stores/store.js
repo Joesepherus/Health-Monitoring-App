@@ -12,6 +12,11 @@ class store {
   loggedIn = false
   admin = { users: [] }
   user = {}
+  activeHeader = ''
+
+  setActiveHeader(header) {
+    this.activeHeader = header
+  }
 
   setLoggedIn(status) {
     this.loggedIn = status
@@ -129,12 +134,14 @@ class store {
       })
   }
 
-  async updateAdmin(email, name) {
+  async updateAdmin(email, name, minHeartRate, maxHeartRate) {
     let admin = await axios
       .put(server_api + '/api/admin/' + this.admin._id, {
         admin: {
           email: email,
-          name: name
+          name: name,
+          minHeartRate: minHeartRate,
+          maxHeartRate: maxHeartRate
         }
       })
       .then(response => {
@@ -195,13 +202,15 @@ decorate(store, {
   loggedIn: observable,
   admin: observable,
   user: observable,
+  activeHeader: observable,
   setLoggedIn: action,
   getAdmin: action,
   getUser: action,
   updateUser: action,
   deleteUser: action,
   updateAdmin: action,
-  deleteAdmin: action
+  deleteAdmin: action,
+  setActiveHeader: action
 })
 
 export default new store()

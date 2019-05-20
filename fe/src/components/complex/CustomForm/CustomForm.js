@@ -31,7 +31,7 @@ class CustomForm extends React.Component {
 
   render() {
     return (
-      <Form className="form">
+      <Form className={'form' + this.props.className}>
         {this.props.data.map(item => {
           return this.renderItem(item)
         })}

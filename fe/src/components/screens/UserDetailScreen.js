@@ -40,6 +40,7 @@ class UserDetailScreen extends Component {
   }
 
   componentDidMount() {
+    this.props.store.setActiveHeader('dashboard')
     this.getUser()
   }
 
