@@ -47,7 +47,6 @@ class Dashboard extends Component {
 
   render() {
     const { store } = this.props
-
     return (
       <div>
         <ContainerPaddingUI>
@@ -81,10 +80,13 @@ class Dashboard extends Component {
                     <CustomCard
                       person={person}
                       className={
-                        person.heartRate[person.heartRate.length - 1]
+                        person !== undefined &&
+                        person.heartRate !== undefined &&
+                        person.heartRate.length > 0 &&
+                        (person.heartRate[person.heartRate.length - 1]
                           .heartRate > store.admin.maxHeartRate ||
-                        person.heartRate[person.heartRate.length - 1]
-                          .heartRate < store.admin.minHeartRate
+                          person.heartRate[person.heartRate.length - 1]
+                            .heartRate < store.admin.minHeartRate)
                           ? 'userAlert'
                           : null
                       }

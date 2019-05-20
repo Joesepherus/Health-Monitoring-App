@@ -68,6 +68,10 @@ class store {
   }
 
   addUser(user, history) {
+    if (user.email === '')
+      showToast('Zadajte email nového používateľa kolobežky.', 'error')
+    if (user.name === '')
+      showToast('Zadaje meno nového používateľa kolobežky.', 'error')
     axios
       .post(server_api + '/api/user', {
         user,

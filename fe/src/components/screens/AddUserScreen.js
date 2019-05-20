@@ -8,7 +8,10 @@ import { observer, inject } from 'mobx-react'
 class AddUserScreen extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      email: '',
+      name: ''
+    }
     this.formData = [
       {
         type: 'input',
