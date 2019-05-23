@@ -56,6 +56,22 @@ class store {
       .catch(function(error) {})
   }
 
+  register(admin, history) {
+    axios
+      .post(server_api + '/api/admin', {
+        admin
+      })
+      .then(response => {
+        if (response.data.status === 200) {
+          showToast(response.data.message, 'info')
+          redirect('/login', history)
+        } else {
+          showToast(response.data.message, 'error')
+        }
+      })
+      .catch(function(error) {})
+  }
+
   async getUser(adminId, userId) {
     let user = await axios
       .get(server_api + '/api/admin=' + adminId + '&user=' + userId)

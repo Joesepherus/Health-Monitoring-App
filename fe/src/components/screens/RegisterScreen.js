@@ -16,24 +16,13 @@ class RegisterScreen extends Component {
     }
   }
 
-  register = data => {
+  register = () => {
     let admin = {
       name: this.state.name,
       email: this.state.email,
       password: this.state.password
     }
-    axios
-      .post(server_api + '/api/admin', {
-        admin
-      })
-      .then(response => {
-        showToast(response.data.message, 'error')
-        if (response.data.status === 200) {
-          redirect('/login', this.props.history)
-        }
-        // return response
-      })
-      .catch(function(error) {})
+    this.props.store.register(admin, this.props.history)
   }
 
   onChange = (value, name) => {

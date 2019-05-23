@@ -9,7 +9,7 @@ export default class CustomModal extends Component {
 
   render() {
     const { open, size } = this.state
-    console.log(this.props.open)
+
     return (
       <div>
         <Modal

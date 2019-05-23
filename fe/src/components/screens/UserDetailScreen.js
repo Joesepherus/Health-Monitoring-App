@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { observer, inject } from 'mobx-react'
+import { toJS } from 'mobx'
 import CustomForm from '../complex/CustomForm/CustomForm'
 import CustomButton from '../basic/CustomButton/CustomButton'
 import CustomHeader from '../basic/CustomHeader/CustomHeader'
@@ -22,6 +23,7 @@ class UserDetailScreen extends Component {
       name: '',
       email: '',
       modalStatus: false,
+      loaded: false,
       formData: [
         {
           type: 'input',
@@ -52,9 +54,14 @@ class UserDetailScreen extends Component {
       let chart = user.heartRate.map(hr => {
         return { x: hr.date, y: hr.heartRate }
       })
+      if (this.state.loaded === false) {
+        this.setState({
+          email: user.email,
+          name: user.name,
+          loaded: true
+        })
+      }
       this.setState({
-        email: user.email,
-        name: user.name,
         heartRate: user.heartRate,
         chart: chart
       })
@@ -112,7 +119,20 @@ class UserDetailScreen extends Component {
         </div>
         <div className="userDetail-data">
           <CustomLineChart data={this.state.chart} />
-          <CustomGoogleMap />
+          {this.props.store.user !== {} &&
+            this.props.store.user.heartRate !== undefined && (
+              <CustomGoogleMap
+                location={
+                  this.props.store.user.heartRate !== undefined &&
+                  this.props.store.user.heartRate.length > 0 &&
+                  toJS(
+                    this.props.store.user.heartRate[
+                      this.props.store.user.heartRate.length - 1
+                    ].location
+                  )
+                }
+              />
+            )}
           <CustomTable head={head} body={this.state.heartRate} />
         </div>
         <CustomModal

@@ -146,7 +146,7 @@ app.post('/api/admin', function(req, res) {
         status: 404
       })
     } else {
-      res.send({ message: 'Úspešne si sa zaregistroval.' })
+      res.send({ message: 'Úspešne si sa zaregistroval.', status: 200 })
     }
   })
 })

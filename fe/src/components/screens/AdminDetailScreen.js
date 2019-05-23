@@ -15,6 +15,7 @@ class AdminDetailScreen extends Component {
       minHeartRate: this.props.store.admin.minHeartRate,
       maxHeartRate: this.props.store.admin.maxHeartRate,
       modalStatus: false,
+      changing: false,
       oldPassword: '',
       newPassword: '',
       basicDataForm: [
@@ -79,7 +80,7 @@ class AdminDetailScreen extends Component {
   }
 
   componentDidUpdate(nextProps) {
-    if (nextProps.store.admin.name !== this.state.name) {
+    if (nextProps.store.admin.name !== this.state.name && this.state.changing === false) {
       this.setState({
         name: nextProps.store.admin.name,
         email: nextProps.store.admin.email,
@@ -117,8 +118,10 @@ class AdminDetailScreen extends Component {
   }
 
   onChange = (value, name) => {
+    console.log(value, name)
     this.setState({
-      [name]: value
+      [name]: value,
+      changing: true
     })
   }
 
