@@ -8,17 +8,17 @@ const AnyReactComponent = ({ text }) => <div>{text}</div>
 class SimpleMap extends Component {
   constructor(props) {
     super(props)
+      console.log('this.props: ', this.props);
     this.state = {
-      lat: this.props.location.lat ? this.props.location.lat : 48.11568,
-      lng: this.props.location.lng ? this.props.location.lng : 17.11631,
+      lat: this.props.location && this.props.location.lat ? this.props.location.lat : 48.11568,
+      lng: this.props.location && this.props.location.lng ? this.props.location.lng : 17.11631,
       zoom: this.props.zoom ? this.props.zoom : 15
     }
   }
 
   componentDidUpdate(nextProps) {
-    console.log(nextProps.location.lat)
     if (
-      nextProps.location !== false &&
+      nextProps.location && nextProps.location !== false &&
       (nextProps.location.lat !== this.state.lat ||
         nextProps.location.lng !== this.state.lng)
     ) {

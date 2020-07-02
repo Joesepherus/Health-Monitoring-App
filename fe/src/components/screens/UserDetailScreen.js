@@ -51,6 +51,7 @@ class UserDetailScreen extends Component {
     let adminId = this.props.match.params.adminId
     interval = setInterval(async () => {
       let user = await this.props.store.getUser(adminId, userId)
+      console.log('user: ', user);
       let chart = user.heartRate.map(hr => {
         return { x: hr.date, y: hr.heartRate }
       })
@@ -98,6 +99,7 @@ class UserDetailScreen extends Component {
   }
 
   render() {
+                  console.log('this.props.store.user: ', this.props.store.user);
     return (
       <div className="userDetail">
         <CustomHeader type="h1">Detail používateľa</CustomHeader>
@@ -119,7 +121,7 @@ class UserDetailScreen extends Component {
         </div>
         <div className="userDetail-data">
           <CustomLineChart data={this.state.chart} />
-          {this.props.store.user !== {} &&
+          {this.props.store.user.heartRate !== {} &&
             this.props.store.user.heartRate !== undefined && (
               <CustomGoogleMap
                 location={

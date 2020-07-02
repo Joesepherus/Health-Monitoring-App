@@ -5,6 +5,8 @@ var mongoose = require('mongoose')
 const io = require('socket.io')()
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/fe'))
+const dotenv = require('dotenv')
+dotenv.config()
 const env = process.env.NODE_ENV || 'development'
 const cors = require('cors')
 
@@ -15,10 +17,11 @@ date = new Date()
 console.log('Starting application')
 
 // DB SETUP
+console.log('process.env.MONGOLAB_URI_HEALTH_MONITORING_APP: ', process.env.MONGOLAB_URI_HEALTH_MONITORING_APP)
 MONGOLAB_URI = process.env.MONGOLAB_URI_HEALTH_MONITORING_APP
 console.log('Initializing connection to MongoDB')
 // mongoose.connect('mongodb://localhost:27017/health-monitoring-app', function(
-mongoose.connect(MONGOLAB_URI, function(error) {
+mongoose.connect(MONGOLAB_URI, function (error) {
   if (error) console.error(error)
   else console.log('Successfuly connected to MongoDB')
 })
@@ -28,8 +31,8 @@ mongoose.connect(MONGOLAB_URI, function(error) {
 User = require('./models/user.js')
 
 // get all users
-app.get('/api/user', function(req, res) {
-  User.getAllUsers(function(err, allUsers) {
+app.get('/api/user', function (req, res) {
+  User.getAllUsers(function (err, allUsers) {
     if (err) {
       throw err
     }
@@ -39,8 +42,8 @@ app.get('/api/user', function(req, res) {
 })
 
 // get a user with a certain ID
-app.get('/api/admin=:adminId&user=:userId', function(req, res) {
-  User.getUserById(req.params.adminId, req.params.userId, function(err, user) {
+app.get('/api/admin=:adminId&user=:userId', function (req, res) {
+  User.getUserById(req.params.adminId, req.params.userId, function (err, user) {
     if (err) {
       throw err
     }
@@ -49,12 +52,12 @@ app.get('/api/admin=:adminId&user=:userId', function(req, res) {
 })
 
 // add a new user
-app.post('/api/user', function(req, res) {
+app.post('/api/user', function (req, res) {
   var user = req.body.user
-  let admin_id = req.body.admin_id
+  const admin_id = req.body.admin_id
   console.log(user)
   console.log(admin_id)
-  User.addUser(user, admin_id, function(err, user) {
+  User.addUser(user, admin_id, function (err, user) {
     if (err) {
       res.send({
         message: 'something went wrong'
@@ -71,11 +74,11 @@ app.post('/api/user', function(req, res) {
 })
 
 // update a user
-app.put('/api/user/:id', function(req, res) {
+app.put('/api/user/:id', function (req, res) {
   var userId = req.params.id
-  let adminId = req.body.adminId
+  const adminId = req.body.adminId
   var user = req.body.user
-  User.updateUser(adminId, userId, user, function(err, user) {
+  User.updateUser(adminId, userId, user, function (err, user) {
     if (err) {
       res.send({ message: 'Error', status: 200 })
     } else {
@@ -89,12 +92,12 @@ app.put('/api/user/:id', function(req, res) {
 })
 
 // remove user permanently
-app.delete('/api/user/adminId=:adminId&userId=:userId', function(req, res) {
-  let adminId = req.params.adminId
-  let userId = req.params.userId
+app.delete('/api/user/adminId=:adminId&userId=:userId', function (req, res) {
+  const adminId = req.params.adminId
+  const userId = req.params.userId
   console.log('userId: ', userId)
   console.log('adminId: ', adminId)
-  User.deletePermanentlyUser(adminId, userId, function(err, user) {
+  User.deletePermanentlyUser(adminId, userId, function (err, user) {
     console.log(user)
     if (err) {
       res.send({
@@ -115,8 +118,8 @@ app.delete('/api/user/adminId=:adminId&userId=:userId', function(req, res) {
 Admin = require('./models/admin.js')
 
 // get all admins
-app.get('/api/admin', function(req, res) {
-  Admin.getAllAdmins(function(err, allAdmins) {
+app.get('/api/admin', function (req, res) {
+  Admin.getAllAdmins(function (err, allAdmins) {
     if (err) {
       throw err
     }
@@ -126,8 +129,8 @@ app.get('/api/admin', function(req, res) {
 })
 
 // get a admin with a certain ID
-app.get('/api/admin/:id', function(req, res) {
-  Admin.getAdminById(req.params.id, function(err, admin) {
+app.get('/api/admin/:id', function (req, res) {
+  Admin.getAdminById(req.params.id, function (err, admin) {
     if (err) {
       throw err
     }
@@ -136,10 +139,10 @@ app.get('/api/admin/:id', function(req, res) {
 })
 
 // add a new admin
-app.post('/api/admin', function(req, res) {
+app.post('/api/admin', function (req, res) {
   var admin = req.body.admin
   console.log(admin)
-  Admin.addAdmin(admin, function(err) {
+  Admin.addAdmin(admin, function (err) {
     if (err) {
       res.send({
         message: 'Admin s emailom ' + admin.email + ' už existuje.',
@@ -152,10 +155,10 @@ app.post('/api/admin', function(req, res) {
 })
 
 // login admin
-app.post('/api/admin/login', function(req, res) {
+app.post('/api/admin/login', function (req, res) {
   var admin = req.body.admin
   console.log(admin)
-  Admin.loginAdmin(admin, function(err, admin_db) {
+  Admin.loginAdmin(admin, function (err, admin_db) {
     if (err) {
       res.send({
         message: 'Zadali ste nesprávne prihlasovacie údaje.',
@@ -173,12 +176,12 @@ app.post('/api/admin/login', function(req, res) {
 })
 
 // update a admin
-app.put('/api/admin/:id', function(req, res) {
+app.put('/api/admin/:id', function (req, res) {
   var id = req.params.id
   var admin = req.body.admin
   console.log(id)
   console.log(admin)
-  Admin.updateAdmin(id, admin, { new: true }, function(err, admin) {
+  Admin.updateAdmin(id, admin, { new: true }, function (err, admin) {
     console.log('admin: ', admin)
     if (err) {
       res.send({ message: 'Error', status: 200 })
@@ -193,12 +196,12 @@ app.put('/api/admin/:id', function(req, res) {
 })
 
 // change password of a admin
-app.put('/api/admin/changePassword/:id', function(req, res) {
+app.put('/api/admin/changePassword/:id', function (req, res) {
   var id = req.params.id
   var admin = req.body.admin
   console.log(id)
   console.log(admin)
-  Admin.changePassword(id, admin, {}, function(err, db_admin) {
+  Admin.changePassword(id, admin, {}, function (err, db_admin) {
     console.log('admin: ', db_admin)
     if (err) {
       res.send({ message: 'Error nesprávne prihlasovacie údaje.', status: 200 })
@@ -212,9 +215,9 @@ app.put('/api/admin/changePassword/:id', function(req, res) {
 })
 
 // remove admin permanently
-app.delete('/api/admin/:id', function(req, res) {
+app.delete('/api/admin/:id', function (req, res) {
   var id = req.params.id
-  Admin.deletePermanentlyAdmin(id, function(err, admin) {
+  Admin.deletePermanentlyAdmin(id, function (err, admin) {
     if (err) {
       res.send({
         message: 'Nastala chyba pri vymávaní admina.'
@@ -230,7 +233,7 @@ app.delete('/api/admin/:id', function(req, res) {
 })
 
 // calling server to listen on port
-var server = app.listen(process.env.PORT || 3001, function() {
+var server = app.listen(process.env.PORT || 3001, function () {
   var host = server.address().address
   var port = server.address().port
   console.log('App listening at http://%s:%s', host, port)
