@@ -4,7 +4,8 @@
   "description": "React Web App about monitoring health of its users",
   "main": "app.js",
   "engines": {
-    "npm": "6.2.x"
+    "npm": "6.2.x",
+    "node": "8.10.0"
   },
   "scripts": {
     "start": "node server.js",
