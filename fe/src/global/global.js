@@ -1,12 +1,12 @@
 import store from '../stores/store'
 import { toast } from 'react-toastify'
 
-export let server_api = 'http://localhost:3001'
-// export let server_api = ''
+// export let server_api = 'http://localhost:3001'
+export let server_api = ''
 
 export function showToast(msg, type) {
   toast[type](msg, {
-    position: toast.POSITION.BOTTOM_LEFT
+    position: toast.POSITION.BOTTOM_LEFT,
   })
 }
 
